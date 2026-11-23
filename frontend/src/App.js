@@ -131,7 +131,7 @@ export default function App() {
 
   const eventProps = (event) => ({
     className: event.id === selectedId ? "evt selected" : "evt",
-    style: { backgroundColor: COLORS[event.id % COLORS.length] },
+    style: { "--evt": COLORS[event.id % COLORS.length] },
   });
 
   return (

@@ -79,7 +79,7 @@ main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; al
 .count { margin-left: 6px; font-size: 0.75rem; padding: 0 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 
 /* ---------- cards ---------- */
-.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .card { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; transition: border-color 0.15s; }
 .card:hover { border-color: var(--accent); }
 .card-title { font-weight: 600; color: var(--text); text-decoration: none; line-height: 1.3; }
@@ -139,12 +139,18 @@ summary { cursor: pointer; }
 .rbc-off-range { color: var(--muted); opacity: 0.55; }
 .rbc-off-range-bg { background: color-mix(in srgb, var(--muted) 8%, transparent); }
 .rbc-today { background: color-mix(in srgb, var(--accent) 8%, transparent); }
-.rbc-event.evt { border: none; border-radius: 6px; padding: 2px 8px; font-size: 0.78rem; font-weight: 500; color: #fff; }
+.rbc-event.evt { border: none; border-left: 3px solid var(--evt); border-radius: 6px; padding: 2px 8px; font-size: 0.78rem; font-weight: 500;
+  color: var(--text); background: color-mix(in srgb, var(--evt) 16%, var(--surface)); }
+.rbc-agenda-view tr.evt > td:not(.rbc-agenda-date-cell) { background: color-mix(in srgb, var(--evt) 14%, var(--surface)); color: var(--text); }
+.rbc-agenda-view tr.evt > .rbc-agenda-time-cell { border-left: 3px solid var(--evt); }
 .rbc-event.evt.selected, .rbc-event.evt:focus { outline: 2px solid var(--text); outline-offset: 1px; }
 .rbc-show-more { color: var(--accent); font-weight: 600; background: transparent; }
 .rbc-time-content, .rbc-time-header-content, .rbc-time-header.rbc-overflowing { border-color: var(--border); }
 .rbc-current-time-indicator { background: var(--danger); }
 .rbc-agenda-view table.rbc-agenda-table { border-color: var(--border); }
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td { border-top: 1px solid var(--border); }
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td { border-left: 1px solid var(--border); }
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th { border-bottom: 1px solid var(--border); }
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th { color: var(--muted); }
 .rbc-overlay { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
 .rbc-overlay-header { border-color: var(--border); }

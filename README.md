@@ -136,6 +136,8 @@ Open **http://localhost:3000**. The dev server forwards `/api` requests to `http
 | Tune course results            | Add interests (for example `python`) in the header; they are saved and affect course ranking                      |
 | Look up a topic without a task | Use **Explore a topic** at the bottom                                                                         |
 
+Each task gets one of six colors, shown as a light tint with a colored stripe in the month, week, day and agenda views. Your tasks are saved in a local database file; see [Data model](#data-model).
+
 ## How it works
 
 ### The big picture
@@ -322,6 +324,8 @@ curl "http://127.0.0.1:5001/api/courses?q=machine%20learning"
 
 SQLite, created automatically by Flask-SQLAlchemy on first run.
 
+**Where your tasks live:** every task you add is saved to the file `backend/instance/saathi.db`, so tasks survive restarts. The file is in `.gitignore`, so it is not uploaded to GitHub and a fresh clone starts with an empty calendar. To back it up, copy the file while the server is stopped. To start over, stop the server and delete the file; it is recreated empty on the next start. Set `DATABASE_URL` to keep it somewhere else.
+
 | Table              | Columns                                                                                                               | Notes                                                             |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | `event`          | `id`, `title` (max 100), `start`, `end` (text, ISO 8601), `desc` (max 255)                                  | Times are stored exactly as sent, as text                         |
@@ -403,7 +407,8 @@ The backend has **no automated tests**. It was checked by hand against a clean i
 | Change the prompt Gemini sees                            | The prompt in `extract_keywords` ([backend/keywords.py](backend/keywords.py)) and in `process_command` ([backend/app.py](backend/app.py))                                                     |
 | Use another LLM provider                                 | Replace the body of `generate_json` in [backend/llm.py](backend/llm.py); callers only need a function that returns a dict                                                                      |
 | Add a new kind of recommendation (for example, articles) | Add a module like `videos.py`, call it in `run_recommendation_job`, add a column to `Recommendation`, and add a tab in [Recommendations.js](frontend/src/components/Recommendations.js)    |
-| Change colors or layout                                  | CSS variables at the top of [frontend/src/index.css](frontend/src/index.css); layout rules in [frontend/src/App.css](frontend/src/App.css)                                                        |
+| Change task colors | The `COLORS` list at the top of [frontend/src/App.js](frontend/src/App.js). Each task takes one color by its id, shown as a light tint with a colored left stripe; the tint rules are `.rbc-event.evt` and `.rbc-agenda-view tr.evt` in [frontend/src/App.css](frontend/src/App.css) |
+| Change other colors or layout                                  | CSS variables at the top of [frontend/src/index.css](frontend/src/index.css); layout rules in [frontend/src/App.css](frontend/src/App.css)                                                        |
 
 The API is read by the page through [frontend/src/api.js](frontend/src/api.js), so a new route needs a new function there too. Existing databases are not migrated: adding a column means deleting `backend/instance/saathi.db` (which loses your tasks) or altering the table yourself.
 
